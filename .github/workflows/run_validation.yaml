@@ -17,7 +17,7 @@ jobs:
       - name: Render validation HTML
         run: Rscript -e 'rmarkdown::render("validation.Rmd", output_file = "validation.html")'
       - name: Render validation README
-        run: Rscript -e 'rmarkdown::render("validation.Rmd", output_file = "README.md)'
+        run: Rscript -e 'rmarkdown::render("validation.Rmd", output_file = "README.md")'
       - name: Commit results
         run: |
           git add --force validation.html README.md
