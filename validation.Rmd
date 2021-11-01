@@ -18,7 +18,7 @@ Read in the data:
 d <- read_csv("data/my_data.csv")
 ```
 
-Set up data validation checks ([see `pointblank` page for more](https://rich-iannone.github.io/pointblank/articles/VALID-I.html):
+Set up data validation checks ([see `pointblank` page for more](https://rich-iannone.github.io/pointblank/articles/VALID-I.html)):
 
 ```{r}
 eval_d <- create_agent(
@@ -39,11 +39,11 @@ eval_d <- create_agent(
 
 Get the HTML widget report:
 
-```{r eval = knitr::is_html_output()}
+```{r eval = knitr::is_html_output(excludes = "markdown")}
 eval_d
 ```
 
-```{r eval = !knitr::is_html_output()}
+```{r eval = !knitr::is_html_output(excludes = "markdown")}
 eval_d %>% 
   get_agent_report(display_table = F)
 ```
