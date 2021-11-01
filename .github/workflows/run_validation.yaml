@@ -1,0 +1,25 @@
+on:
+  push:
+    branches:
+      - main
+      
+jobs:
+  render:
+    name: Render validation RMD
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: r-lib/actions/setup-r@v1
+      - uses: r-lib/actions/setup-pandoc@v1
+      - uses: r-lib/actions/setup-tinytex@v1
+      - name: Install packages
+        run: Rscript -e 'install.packages(c("pointblank", "dplyr", "rmarkdown", "knitr"))'
+      - name: Render validation HTML
+        run: Rscript -e 'rmarkdown::render("validation.Rmd", output_file = "validation.html")'
+      - name: Render validation README
+        run: Rscript -e 'rmarkdown::render("validation.Rmd", output_file = "README.md)'
+      - name: Commit results
+        run: |
+          git add --force validation.html README.md
+          git commit -m 'Rerun validation checks' || echo "No changes to commit"
+          git push origin || echo "No changes to commit"
