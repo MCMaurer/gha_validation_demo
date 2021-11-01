@@ -1,0 +1,52 @@
+---
+title: "Data Validation"
+author: "Michael Culshaw-Maurer"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(pointblank)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Read in the data:
+
+```{r}
+d <- read_csv("data/my_data.csv")
+```
+
+Set up data validation checks ([see `pointblank` page for more](https://rich-iannone.github.io/pointblank/articles/VALID-I.html):
+
+```{r}
+eval_d <- create_agent(
+  tbl = d,
+  tbl_name = "my_data",
+  label = "Data Validation Demo",
+  actions = 
+    action_levels(warn_at = 0.01,
+                  stop_at = 0.02)
+) %>% 
+  col_is_numeric(vars(weight, length, prop)) %>% 
+  col_is_integer(vars(count)) %>% 
+  col_is_character(vars(group)) %>% 
+  col_vals_gte(vars(count), 0) %>% 
+  col_vals_between(vars(prop), 0, 1) %>% 
+  interrogate()
+```
+
+Get the HTML widget report:
+
+```{r}
+eval_d
+```
+
+For rowwise checks, identify which rows fail and which pass:
+
+```{r}
+eval_d %>% 
+  get_sundered_data(type = "combined") %>% 
+  print(n=Inf)
+```
+
