@@ -39,8 +39,13 @@ eval_d <- create_agent(
 
 Get the HTML widget report:
 
-```{r}
+```{r eval = knitr::is_html_output()}
 eval_d
+```
+
+```{r eval = !knitr::is_html_output()}
+eval_d %>% 
+  get_agent_report(display_table = F)
 ```
 
 For rowwise checks, identify which rows fail and which pass:
